@@ -1,0 +1,8 @@
+//
+// Created by scott on 2/17/22.
+//
+
+#ifndef KEVIN_BACON_COLORED_GRAPH_H
+#define KEVIN_BACON_COLORED_GRAPH_H
+
+#endif //KEVIN_BACON_COLORED_GRAPH_H
