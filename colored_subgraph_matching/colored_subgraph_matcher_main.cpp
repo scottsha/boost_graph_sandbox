@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
 
+#include <boost/graph/graphviz.hpp>
+
 #include "colored_graph_subgraph_matching.h"
 
 std::pair<std::vector<std::pair<int, int>>, std::vector<ColorType>> make_flower_graph(int num_petals) {
@@ -73,7 +75,7 @@ void example_five_and_four() {
                                           {7, 8},
                                              {8, 5}
              },
-             {       0, 1, 1, 1, 1, 2, 3, 3, 3}
+             {       0,0,0,0,0,0,0,0,0}
      });
     auto albert = make_colored_graph(g_two_subs.first, g_two_subs.second);
     //
@@ -92,14 +94,70 @@ void example_five_and_four() {
                     //
                      {0,5}
              },
-             {       0, 1, 1, 1, 1, 2, 3, 3, 3}
+             {1,1,1,1,1,1,1,1,1}
      });
     auto bertie = make_colored_graph(g_two_subs.first, g_two_subs.second);
     match_example_graphs(albert, bertie);
 }
 
 
+void example_simplest_nonmatch() {
+    std::vector<std::pair<int,int>> albert_edges = {};
+    std::vector<ColorType> albert_colors = {0};
+    auto albert = make_colored_graph(albert_edges, albert_colors);
+    //
+    std::vector<std::pair<int,int>> bertie_edges = {};
+    std::vector<ColorType> bertie_colors = {1};
+    auto bertie = make_colored_graph(bertie_edges, bertie_colors);
+    //
+    match_example_graphs(albert, bertie);
+}
+
+void example_simplest_match() {
+    std::vector<std::pair<int,int>> albert_edges = {};
+    std::vector<ColorType> albert_colors = {5};
+    auto albert = make_colored_graph(albert_edges, albert_colors);
+    //
+    std::vector<std::pair<int,int>> bertie_edges = {};
+    std::vector<ColorType> bertie_colors = {5};
+    auto bertie = make_colored_graph(bertie_edges, bertie_colors);
+    //
+    match_example_graphs(albert, bertie);
+}
+
+void example_single_edges() {
+    std::vector<std::pair<int,int>> albert_edges = {{0,1}};
+    std::vector<ColorType> albert_colors = {2, 2};
+    auto albert = make_colored_graph(albert_edges, albert_colors);
+    write_graphviz(std::cout, albert);
+    std::cout << "- - -" << std::endl;
+    //
+    std::vector<std::pair<int,int>> bertie_edges = {{0,1}};
+    std::vector<ColorType> bertie_colors = {2, 2};
+    auto bertie = make_colored_graph(bertie_edges, bertie_colors);
+    write_graphviz(std::cout, bertie);
+    std::cout << "- - -" << std::endl;
+    //
+    match_example_graphs(albert, bertie);
+}
+
+void example_triangles() {
+    std::vector<std::pair<int,int>> albert_edges = {{0,1}, {1,2}, {2,0}};
+    std::vector<ColorType> albert_colors = {3,3,3};
+    auto albert = make_colored_graph(albert_edges, albert_colors);
+    write_graphviz(std::cout, albert);
+    std::cout << "- - -" << std::endl;
+    //
+    std::vector<std::pair<int,int>> bertie_edges = {{0,1}, {1,2}, {2,0}};
+    std::vector<ColorType> bertie_colors = {3,3,3};
+    auto bertie = make_colored_graph(bertie_edges, bertie_colors);
+    write_graphviz(std::cout, bertie);
+    std::cout << "- - -" << std::endl;
+    //
+    match_example_graphs(albert, bertie);
+}
+
 int main(int argc, const char **argv) {
-    example_five_and_four();
+    example_triangles();
     return 0;
 }

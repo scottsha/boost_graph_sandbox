@@ -32,6 +32,7 @@ class CommonSubgraphCallback {
                 }
             }
             // Now check that this isn't a super- or subgraph of the last subgraph.
+
             if (!match_maps_.empty()) {
                 // Check if the matches are actually just redundant inclusions:
                 const VertexMatchMap& last_match = match_maps_.back();
@@ -46,6 +47,8 @@ class CommonSubgraphCallback {
             } else {
                 match_maps_.push_back(match_map);
             }
+
+//            match_maps_.push_back(match_map);
             std::cout << std::endl;
             return (true);
         }
@@ -60,7 +63,7 @@ std::vector<VertexMatchMap> common_connected_subgraphs(ColoredGraph g0, ColoredG
     boost::property_map<ColoredGraph , boost::vertex_index_t>::type g0_vertex_index_map = boost::get(boost::vertex_index, g0);
     boost::property_map<ColoredGraph , boost::vertex_index_t>::type g1_vertex_index_map = boost::get(boost::vertex_index, g1);
     // Actual subgraph matching call:
-    boost::mcgregor_common_subgraphs_unique(g0,
+    boost::mcgregor_common_subgraphs(g0,
                                                     g1,
                                                     g0_vertex_index_map,
                                                     g1_vertex_index_map,
