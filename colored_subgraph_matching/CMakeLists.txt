@@ -1,0 +1,1 @@
+add_executable(colored_subgraph_matcher colored_subgraph_matcher_main.cpp colored_graph.cpp colored_graph_subgraph_matching.cpp colored_graph_subgraph_matching.h)

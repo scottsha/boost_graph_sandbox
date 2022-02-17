@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.21)
-project(kevin_bacon)
+project(boost_graph_sandbox)
 
 set(CMAKE_CXX_STANDARD 23)
 
