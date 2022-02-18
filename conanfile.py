@@ -6,8 +6,9 @@ class PyphysnaConanFile(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     # comma-separated list of requirements
     requires = \
-        "boost/1.76.0"
-        #
+        "boost/1.76.0", \
+        "gtest/1.10.0"
+#
     generators = "cmake_find_package"
 
 
