@@ -143,7 +143,7 @@ void example_single_edges() {
 
 void example_triangles() {
     std::vector<std::pair<int,int>> albert_edges = {{0,1}, {1,2}, {2,0}};
-    std::vector<ColorType> albert_colors = {3,3,3};
+    std::vector<ColorType> albert_colors = {4,3,3};
     auto albert = make_colored_graph(albert_edges, albert_colors);
     write_graphviz(std::cout, albert);
     std::cout << "- - -" << std::endl;
