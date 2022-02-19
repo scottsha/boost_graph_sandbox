@@ -264,6 +264,72 @@ TEST(colored_graph, disconnected) {
     }
 }
 
+TEST(colored_graph, k4_uniform) {
+    std::vector<std::pair<int,int>> albert_edges = {
+            {0,1},
+            {0,2},
+            {0,3},
+            {1,2},
+            {1,3},
+            {2,3},
+    };
+    std::vector<ColorType> albert_colors = {0,0,0,0};
+    auto albert = make_colored_graph(albert_edges, albert_colors);
+    //
+    std::vector<std::pair<int,int>> bertie_edges = {
+            {0,1},
+            {0,2},
+            {0,3},
+            {1,2},
+            {1,3},
+            {2,3},
+    };
+    std::vector<ColorType> bertie_colors = {0,0,0,0};
+    auto bertie = make_colored_graph(bertie_edges, bertie_colors);
+    //
+    auto matchings = common_connected_subgraphs(albert, bertie);
+    EXPECT_EQ(matchings.size(), 24);
+}
+
+TEST(colored_graph, k4_distinct_vertices) {
+    std::vector<std::pair<int,int>> albert_edges = {
+            {0,1},
+            {0,2},
+            {0,3},
+            {1,2},
+            {1,3},
+            {2,3},
+    };
+    std::vector<ColorType> albert_colors = {0,1,2,3};
+    auto albert = make_colored_graph(albert_edges, albert_colors);
+    //
+    std::vector<std::pair<int,int>> bertie_edges = {
+            {0,1},
+            {0,2},
+            {0,3},
+            {1,2},
+            {1,3},
+            {2,3},
+    };
+    std::vector<ColorType> bertie_colors = {3,2,1,0};
+    auto bertie = make_colored_graph(bertie_edges, bertie_colors);
+    //
+    auto matchings = common_connected_subgraphs(albert, bertie);
+    EXPECT_EQ(matchings.size(), 1);
+}
+
+TEST(colored_graph, disconnected_vertices) {
+    std::vector<std::pair<int,int>> albert_edges = {};
+    std::vector<ColorType> albert_colors = {0,0,0,0};
+    auto albert = make_colored_graph(albert_edges, albert_colors);
+    //
+    std::vector<std::pair<int,int>> bertie_edges = {};
+    std::vector<ColorType> bertie_colors = {0,0,0,0};
+    auto bertie = make_colored_graph(bertie_edges, bertie_colors);
+    //
+    auto matchings = common_connected_subgraphs(albert, bertie);
+    EXPECT_EQ(matchings.size(), 16);
+}
 
 
 int main(int argc, char **argv) {
