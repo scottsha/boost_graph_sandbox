@@ -89,7 +89,9 @@ class CommonSubgraphCallback {
 std::vector<VertexMatchMap> common_connected_subgraphs(ColoredGraph g0, ColoredGraph g1) {
     // Define the vertex equivalence to work on vertex colors
     auto graph_color_equivalence = boost::make_property_map_equivalent(
-            boost::get(boost::vertex_color, g0), boost::get(boost::vertex_color, g1));
+            boost::get(boost::vertex_color, g0),
+            boost::get(boost::vertex_color, g1)
+    );
     //
     CommonSubgraphCallback subgraph_callback(g0, g1);
     boost::property_map<ColoredGraph, boost::vertex_index_t>::type g0_vertex_index_map = boost::get(boost::vertex_index, g0);
