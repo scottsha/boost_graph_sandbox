@@ -86,6 +86,41 @@ class CommonSubgraphCallback {
         }
 };
 
+class PrintOnlySubgraphCallback {
+private:
+    const ColoredGraph &graph0_;
+    const ColoredGraph &graph1_;
+    std::vector<VertexMatchMap> match_maps_;
+    VertexMatchMap* last_match_ = nullptr;
+
+public:
+    PrintOnlySubgraphCallback(const ColoredGraph &graph_0,
+                           const ColoredGraph &graph_1) :
+            graph0_(graph_0), graph1_(graph_1) {}
+
+    std::vector<VertexMatchMap> get_match_maps() {return match_maps_;}
+
+    template<typename CorrespondenceMapFirstToSecond,
+            typename CorrespondenceMapSecondToFirst>
+    bool operator()(CorrespondenceMapFirstToSecond correspondence_map_0_to_1,
+                    CorrespondenceMapSecondToFirst correspondence_map_1_to_0,
+                    typename boost::graph_traits<ColoredGraph>::vertices_size_type subgraph_size) {
+        // Store all the vertex correspondences between the two subgraphs, replacing any that are not maximal.
+        if (subgraph_size < 4) return true;
+        // First read out the matching:
+        VertexMatchMap match_map;
+        BGL_FORALL_VERTICES_T(vertex0, graph0_, ColoredGraph) {
+            // Skip unmapped vertice
+            if (get(correspondence_map_0_to_1, vertex0) != boost::graph_traits<ColoredGraph>::null_vertex()) {
+                int vertex1 = get(correspondence_map_0_to_1, vertex0);
+                std::cout << vertex0 << "<>" << vertex1 << " ";
+            }
+        }
+        std::cout << std::endl;
+        return (true);
+    }
+};
+
 std::vector<VertexMatchMap> common_connected_subgraphs(ColoredGraph g0, ColoredGraph g1) {
     // Define the vertex equivalence to work on vertex colors
     auto graph_color_equivalence = boost::make_property_map_equivalent(
@@ -93,11 +128,12 @@ std::vector<VertexMatchMap> common_connected_subgraphs(ColoredGraph g0, ColoredG
             boost::get(boost::vertex_color, g1)
     );
     //
+//    PrintOnlySubgraphCallback subgraph_callback(g0, g1);
     CommonSubgraphCallback subgraph_callback(g0, g1);
     boost::property_map<ColoredGraph, boost::vertex_index_t>::type g0_vertex_index_map = boost::get(boost::vertex_index, g0);
     boost::property_map<ColoredGraph, boost::vertex_index_t>::type g1_vertex_index_map = boost::get(boost::vertex_index, g1);
     // Actual subgraph matching call:
-    boost::mcgregor_common_subgraphs(
+    boost::mcgregor_common_subgraphs_unique(
         g0,
         g1,
         g0_vertex_index_map,

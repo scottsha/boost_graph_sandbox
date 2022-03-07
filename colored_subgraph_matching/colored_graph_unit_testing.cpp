@@ -331,6 +331,107 @@ TEST(colored_graph, disconnected_vertices) {
     EXPECT_EQ(matchings.size(), 16);
 }
 
+ColoredGraph generate_dodecahedron(){
+    std::vector<std::pair<int,int>> dodecahedron_edges = {
+            {0,1},
+            {1,2},
+            {2,3},
+            {3,4},
+            {4,0},
+            {0,5},
+            {1,6},
+            {2,7},
+            {3,8},
+            {4,9},
+            {5,14},
+            {5,10},
+            {6,10},
+            {6,11},
+            {7,11},
+            {7,12},
+            {8,12},
+            {8,13},
+            {9,13},
+            {9,14},
+            {10,15},
+            {11,16},
+            {12,17},
+            {13,18},
+            {14,19},
+            {15,16},
+            {16,17},
+            {17,18},
+            {18,19},
+            {19,15},
+    };
+    std::vector<ColorType> dodecahedron_colors = {42,42,42,42,42,42,42,42,42,42,42,42};
+    return make_colored_graph(dodecahedron_edges, dodecahedron_colors);
+}
+
+ColoredGraph generate_icosahedron(){
+    std::vector<std::pair<int,int>> icosahedron_edges = {
+            {0,1},
+            {0,2},
+            {0,3},
+            {0,4},
+            {0,5},
+            {1,2},
+            {2,3},
+            {3,4},
+            {4,5},
+            {5,1},
+            {1,6},
+            {1,10},
+            {2,6},
+            {2,7},
+            {3,7},
+            {3,8},
+            {4,8},
+            {4,9},
+            {5,9},
+            {5,10},
+            {6,7},
+            {7,8},
+            {8,9},
+            {9,10},
+            {10,6},
+            {6,11},
+            {7,11},
+            {8,11},
+            {9,11},
+            {10,11},
+    };
+    std::vector<ColorType> icosahedron_colors = {42,42,42,42,42,42,42,42,42,42,42,42,};
+    return make_colored_graph(icosahedron_edges, icosahedron_colors);
+}
+
+TEST(colored_graph, tees_to_tees) {
+    //
+    std::vector<std::pair<int,int>> tee0_edges = {{0, 1}, {0, 2}, {0, 3},};
+    std::vector<ColorType> tee0_colors = {42, 42, 42, 42};
+    auto tee0 = make_colored_graph(tee0_edges, tee0_colors);
+    //
+    std::vector<std::pair<int,int>> tee1_edges = {{0, 1}, {0, 2}, {0, 3},};
+    std::vector<ColorType> tee1_colors = {42, 42, 42, 42};
+    auto tee1 = make_colored_graph(tee1_edges, tee1_colors);
+    //
+    auto matchings = common_connected_subgraphs(tee0, tee1);
+    print_matchings(matchings);
+    EXPECT_EQ(matchings.size(), 6);
+}
+
+TEST(colored_graph, dodecahedron_tees) {
+    //
+    auto dodec = generate_dodecahedron();
+    std::vector<std::pair<int,int>> tee_edges = {{0, 1}, {0, 2}, {0, 3},};
+    std::vector<ColorType> tee_colors = {42, 42, 42, 42};
+    auto bertie = make_colored_graph(tee_edges, tee_colors);
+    //
+    auto matchings = common_connected_subgraphs(bertie, dodec);
+    print_matchings(matchings);
+    EXPECT_EQ(matchings.size(), 20 * 6);
+}
+
 
 int main(int argc, char **argv) {
     testing::InitGoogleTest(&argc, argv);
